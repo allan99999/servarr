@@ -14,9 +14,9 @@ services:
       - PGID=1000
       - TZ=Etc/UTC
     volumes:
-      - /media/arr/radarr/config:/config
-      - /media/arr/radarr/movies:/movies #optional
-      - /media/arr/qbittorrent/downloads:/downloads #optional
+      - /mediaserver/radarr/config:/config
+      - /share/Movies:/movies #optional
+      - /share/Downloads:/downloads #optional
     restart: unless-stopped
     
 ############################
@@ -32,9 +32,9 @@ services:
       - PGID=1000
       - TZ=Etc/UTC
     volumes:
-      - /media/arr/sonarr/config:/config
-      - /media/arr/sonarr/tvseries:/tv #optional
-      - /media/arr/qbittorrent/downloads:/downloads #optional
+      - /mediaserver/sonarr/config:/config
+      - /share/Series:/tv #optional
+      - /share/Downloads:/downloads #optional
     restart: unless-stopped
     
 ############################
@@ -50,7 +50,7 @@ services:
       - PGID=1000
       - TZ=Etc/UTC
     volumes:
-      - /media/arr/prowlarr/config:/config
+      - /mediaserver/prowlarr/config:/config
     restart: unless-stopped
 
 ############################
@@ -66,9 +66,9 @@ services:
       - PGID=1000
       - TZ=Etc/UTC
     volumes:
-      - /media/arr/bazarr/config:/config
-      - /media/arr/radarr/movies:/movies #optional
-      - /media/arr/sonarr/tvseries:/tv #optional
+      - /mediaserver/bazarr/config:/config
+      - /share/Movies:/movies #optional
+      - /share/Series:/tv #optional
     restart: unless-stopped
     
 ############################
@@ -84,9 +84,9 @@ services:
       - PGID=1000
       - TZ=Etc/UTC
     volumes:
-      - /media/arr/lidarr/config:/config
-      - /media/arr/lidarr/music:/music #optional
-      - /media/arr/qbittorrent/downloads:/downloads #optional
+      - /mediaserver/lidarr/config:/config
+      - /share/Music:/music #optional
+      - /share/Downloads:/downloads #optional
     restart: unless-stopped
     
 ############################
@@ -104,8 +104,8 @@ services:
       - WEBUI_PORT=8080
       - TORRENTING_PORT=6881
     volumes:
-      - /media/arr/qbittorrent/config:/config
-      - /media/arr/qbittorrent/downloads:/downloads #optional
+      - /mediaserver/qbittorrent/config:/config
+      - /share/Downloads:/downloads #optional
     restart: unless-stopped
     
 ############################
@@ -120,9 +120,9 @@ services:
       - PGID=1000
       - TZ=Etc/UTC
     volumes:
-      - /media/arr/jellyfin/config:/config
-      - /media/arr/sonarr/tvseries:/data/tvshows
-      - /media/arr/radarr/movies:/data/movies
+      - /mediaserver/jellyfin/config:/config
+      - /share/Series:/data/tvshows
+      - /share/Movies:/data/movies
     ports:
       - 8096:8096
       - 8920:8920 #optional
@@ -155,7 +155,7 @@ services:
       - VPN_TYPE=openvpn # or wireguard
       - OPENVPN_USER=<your vpn user>
       - OPENVPN_PASSWORD=<your vpn password>
-      - SERVER_COUNTRIES=Netherlands
+      - SERVER_COUNTRIES=South Africa
       
 ############################
 # JELLYSEER
@@ -165,9 +165,9 @@ services:
        container_name: jellyseerr
        environment:
             - LOG_LEVEL=debug
-            - TZ=Asia/Tashkent
+            - TZ=Africa/Johannesburg
        ports:
             - 5055:5055
        volumes:
-            - /media/arr/jellyseer/config:/app/config
+            - /mediaserver/jellyseer/config:/app/config
        restart: unless-stopped
