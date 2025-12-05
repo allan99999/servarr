@@ -7,14 +7,14 @@ services:
 
   radarr:
     image: lscr.io/linuxserver/radarr:latest
-    container_name: radarr
+    container_name: Radarr
     network_mode: "service:gluetun"
     environment:
       - PUID=1000
       - PGID=1000
       - TZ=Etc/UTC
     volumes:
-      - /mediaserver/radarr/config:/config
+      - /share/Docker/Radarr/config:/config
       - /share/Movies:/movies #optional
       - /share/Downloads:/downloads #optional
     restart: unless-stopped
@@ -25,14 +25,14 @@ services:
 
   sonarr:
     image: lscr.io/linuxserver/sonarr:latest
-    container_name: sonarr
+    container_name: Sonarr
     network_mode: "service:gluetun"
     environment:
       - PUID=1000
       - PGID=1000
       - TZ=Etc/UTC
     volumes:
-      - /mediaserver/sonarr/config:/config
+      - /share/Docker/Sonarr/config:/config
       - /share/Series:/tv #optional
       - /share/Downloads:/downloads #optional
     restart: unless-stopped
@@ -50,7 +50,7 @@ services:
       - PGID=1000
       - TZ=Etc/UTC
     volumes:
-      - /mediaserver/prowlarr/config:/config
+      - /share/Docker/Prowlarr/config:/config
     restart: unless-stopped
 
 ############################
@@ -59,14 +59,14 @@ services:
 
   bazarr:
     image: lscr.io/linuxserver/bazarr:latest
-    container_name: bazarr
+    container_name: Bazarr
     network_mode: "service:gluetun"
     environment:
       - PUID=1000
       - PGID=1000
       - TZ=Etc/UTC
     volumes:
-      - /mediaserver/bazarr/config:/config
+      - /share/Docker/Bazarr/config:/config
       - /share/Movies:/movies #optional
       - /share/Series:/tv #optional
     restart: unless-stopped
@@ -77,14 +77,14 @@ services:
 
   lidarr:
     image: lscr.io/linuxserver/lidarr:latest
-    container_name: lidarr
+    container_name: Lidarr
     network_mode: "service:gluetun"
     environment:
       - PUID=1000
       - PGID=1000
       - TZ=Etc/UTC
     volumes:
-      - /mediaserver/lidarr/config:/config
+      - /share/Docker/Lidarr/config:/config
       - /share/Music:/music #optional
       - /share/Downloads:/downloads #optional
     restart: unless-stopped
@@ -95,7 +95,7 @@ services:
 
   qbittorrent:
     image: lscr.io/linuxserver/qbittorrent:latest
-    container_name: qbittorrent
+    container_name: Qbittorrent
     network_mode: "service:gluetun"
     environment:
       - PUID=1000
@@ -104,7 +104,7 @@ services:
       - WEBUI_PORT=8080
       - TORRENTING_PORT=6881
     volumes:
-      - /mediaserver/qbittorrent/config:/config
+      - /share/Docker/Qbittorrent/config:/config
       - /share/Downloads:/downloads #optional
     restart: unless-stopped
     
@@ -114,13 +114,13 @@ services:
 
   jellyfin:
     image: lscr.io/linuxserver/jellyfin:latest
-    container_name: jellyfin
+    container_name: Jellyfin
     environment:
       - PUID=1000
       - PGID=1000
       - TZ=Etc/UTC
     volumes:
-      - /mediaserver/jellyfin/config:/config
+      - /share/Docker/Jellyfin/config:/config
       - /share/Series:/data/tvshows
       - /share/Movies:/data/movies
     ports:
@@ -129,6 +129,20 @@ services:
       - 7359:7359/udp #optional
       - 1900:1900/udp #optional
     restart: unless-stopped
+
+############################
+# JELLYSEER
+############################
+    jellyseerr:
+       image: fallenbagel/jellyseerr:latest
+       container_name: Jellyseerr
+       network_mode: "service:gluetun"
+       environment:
+            #- LOG_LEVEL=debug
+            - TZ=Africa/Johannesburg          
+       volumes:
+            - /sjare/Docker/Jellyseer/config:/app/config
+       restart: unless-stopped
     
 ############################
 # GLUETUN
@@ -136,7 +150,7 @@ services:
 
   gluetun:
     image: qmcgaw/gluetun
-    container_name: gluetun
+    container_name: Gluetun
     ports:
       - 9696:9696 #prowlarr
       - 7878:7878 #radarr
@@ -146,6 +160,7 @@ services:
       - 8080:8080 #qbittorrent
       - 6881:6881 #qbittorrent
       - 6881:6881/udp #qbittorrent
+      - 5055:5055 #jellyseer
     cap_add:
       - NET_ADMIN
     devices:
@@ -157,17 +172,4 @@ services:
       - OPENVPN_PASSWORD=<your vpn password>
       - SERVER_COUNTRIES=South Africa
       
-############################
-# JELLYSEER
-############################
-    jellyseerr:
-       image: fallenbagel/jellyseerr:latest
-       container_name: jellyseerr
-       environment:
-            - LOG_LEVEL=debug
-            - TZ=Africa/Johannesburg
-       ports:
-            - 5055:5055
-       volumes:
-            - /mediaserver/jellyseer/config:/app/config
-       restart: unless-stopped
+
