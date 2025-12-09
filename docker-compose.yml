@@ -1,4 +1,4 @@
-services:
+yservices:
 
 ############################
 # RADARR
@@ -179,7 +179,7 @@ services:
 ############################
 # SEERR
 ############################
-  seerr:
+  jellyseerr:
     image: image: fallenbagel/jellyseerr:latest
     container_name: jellyseerr
     init: true
