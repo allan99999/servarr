@@ -271,7 +271,7 @@ volumes:
     driver_opts:
       type: nfs
       o: addr=192.168.1.10,nolock,soft,rw
-      device: ":/volume1/Downloads"
+      device: ":/volume1/Download"
 
   nas_music:
     driver: local
