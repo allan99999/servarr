@@ -1,112 +1,115 @@
----
 services:
 
 ############################
 # RADARR
 ############################
-
   radarr:
     image: lscr.io/linuxserver/radarr:latest
     container_name: Radarr
-    #network_mode: "service:gluetun"
     ports:
      - 7878:7878
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=Etc/UTC 
+      - TZ=Africa/Johannesburg 
     volumes:
-      - /share/Docker/Radarr/config:/config
-      - /share/Movies:/movies #optional
-      - /share/Download:/downloads #optional
+      - /home/allan/Docker/Radarr/config:/config
+      - /home/allan/Movies:/movies
+      - /home/allan/Download:/downloads
+    networks:
+      arr_net:
+        ipv4_address: 172.28.0.2
     restart: unless-stopped
     
 ############################
 # SONARR
 ############################
-
   sonarr:
     image: lscr.io/linuxserver/sonarr:latest
     container_name: Sonarr
-    #network_mode: "service:gluetun"
     ports:
      - 8989:8989
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=Etc/UTC
+      - TZ=Africa/Johannesburg
     volumes:
-      - /share/Docker/Sonarr/config:/config
-      - /share/Series:/data/series #optional
-      - /share/Download:/downloads #optional
+      - /home/allan/Docker/Sonarr/config:/config
+      - /home/allan/Series:/data/series
+      - /home/allan/Download:/downloads
+    networks:
+      arr_net:
+        ipv4_address: 172.28.0.3
     restart: unless-stopped
     
 ############################
 # PROWLARR
 ############################
-
   prowlarr:
     image: lscr.io/linuxserver/prowlarr:latest
     container_name: prowlarr
-    #network_mode: "service:gluetun"
     ports:
      - 9696:9696
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=Etc/UTC
+      - TZ=Africa/Johannesburg
     volumes:
-      - /share/Docker/Prowlarr/config:/config
+      - /home/allan/Docker/Prowlarr/config:/config
+    networks:
+      arr_net:
+        ipv4_address: 172.28.0.4
     restart: unless-stopped
 
 ############################
 # BAZARR
 ############################
-
   bazarr:
     image: lscr.io/linuxserver/bazarr:latest
     container_name: Bazarr
     ports: 
-    - 6767:6767
-    #network_mode: "service:gluetun"
+      - 6767:6767
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=Etc/UTC
+      - TZ=Africa/Johannesburg
     volumes:
-      - /share/Docker/Bazarr/config:/config
-      - /share/Movies:/movies #optional
-      - /share/Series:/data/series #optional
+      - /home/allan/Docker/Bazarr/config:/config
+      - /home/allan/Movies:/movies
+      - /home/allan/Series:/data/series
+    networks:
+      arr_net:
+        ipv4_address: 172.28.0.5
     restart: unless-stopped
     
 ############################
 # LIDARR
 ############################
-
   lidarr:
     image: lscr.io/linuxserver/lidarr:latest
     container_name: Lidarr
     ports:
      - 8686:8686
-    #network_mode: "service:gluetun"
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=Etc/UTC
+      - TZ=Africa/Johannesburg
     volumes:
-      - /share/Docker/Lidarr/config:/config
-      - /share/Music:/music #optional
-      - /share/Download:/downloads #optional
+      - /home/allan/Docker/Lidarr/config:/config
+      - /home/allan/Music:/music
+      - /home/allan/Download:/downloads
+    networks:
+      arr_net:
+        ipv4_address: 172.28.0.6
     restart: unless-stopped
-    
-############################
-# QBITTORRENT		
-############################
 
+############################
+# QBITTORRENT (No VPN - Direct Test)
+############################
   qbittorrent:
     image: lscr.io/linuxserver/qbittorrent:latest
     container_name: Qbittorrent
-    #network_mode: "service:gluetun"
+    # Standard ports restored
     ports:
      - 8080:8080
      - 6881:6881
@@ -114,104 +117,127 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=Etc/UTC
+      - TZ=Africa/Johannesburg
       - WEBUI_PORT=8080
       - TORRENTING_PORT=6881
     volumes:
-      - /share/Docker/Qbittorrent/config:/config
-      - /share/Download:/downloads #optional
+      - /home/allan/Docker/Qbittorrent/config:/config
+      - /home/allan/Download:/downloads
+    # Assigned the IP that Gluetun usually holds
+    networks:
+      arr_net:
+        ipv4_address: 172.28.0.7
     restart: unless-stopped
     
 ############################
 # NZBGET
 ############################
-
   nzbget:
     image: lscr.io/linuxserver/nzbget:latest
     container_name: nzbget
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=Etc/UTC
-      - NZBGET_USER=nzbget #optional
-      - NZBGET_PASS=tegbzn6789 #optional
+      - TZ=Africa/Johannesburg
+      - NZBGET_USER=nzbget
+      - NZBGET_PASS=tegbzn6789
     volumes:
-      - /share/Docker/nzbget/config:/config
-      - /share/Download:/downloads #optional
+      - /home/allan/Docker/nzbget/config:/config
+      - /home/allan/Download:/downloads
     ports:
       - 6789:6789
+    networks:
+      arr_net:
+        ipv4_address: 172.28.0.8
     restart: unless-stopped
 
-
-
-
-
-
 ############################
-# JELLYFIN	
+# JELLYFIN
 ############################
-
   jellyfin:
     image: lscr.io/linuxserver/jellyfin:latest
     container_name: Jellyfin
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=Etc/UTC
+      - TZ=Africa/Johannesburg
     volumes:
-      - /share/Docker/Jellyfin/config:/config
-      - /share/Series:/data/series
-      - /share/Movies:/data/movies
-      - /share/Music:/data/music
-      
+      - /home/allan/Docker/Jellyfin/config:/config
+      - /home/allan/Series:/data/series
+      - /home/allan/Movies:/data/movies
+      - /home/allan/Music:/data/music
     ports:
       - 8096:8096
-      - 8920:8920 #optional
-      - 7359:7359/udp #optional
-      - 1900:1900/udp #optional
+      - 8920:8920
+      - 7359:7359/udp
+      - 1900:1900/udp
+    networks:
+      arr_net:
+        ipv4_address: 172.28.0.9
     restart: unless-stopped
 
 ############################
-# JELLYSEER
+# SEERR
 ############################
-  jellyseerr:
-    image: fallenbagel/jellyseerr:latest
-    container_name: Jellyseerr
+  seerr:
+    image: ghcr.io/seerr-team/seerr:latest
+    container_name: seerr
+    init: true
     ports:
       - 5055:5055
-    # network_mode: "service:gluetun"
     environment:
-    #- LOG_LEVEL=debug
-      - TZ=Africa/Johannesburg          
+      - TZ=Africa/Johannesburg
+      - LOG_LEVEL=info
     volumes:
-      - /sjare/Docker/Jellyseer/config:/app/config
+      - /home/allan/Docker/Seerr/config:/app/config
+    networks:
+      arr_net:
+        ipv4_address: 172.28.0.10
     restart: unless-stopped
-    
-############################
-# GLUETUN
-############################
 
-#  gluetun:
-#    image: qmcgaw/gluetun
-#    container_name: Gluetun
-#    ports:
-#     - 9696:9696 #prowlarr
-#     - 7878:7878 #radarr
-#      - 8989:8989 #sonarr
-#      - 6767:6767 #bazarr
-#      - 8686:8686 #lidarr
-#      - 8080:8080 #qbittorrent
-#      - 6881:6881 #qbittorrent
-#      - 6881:6881/udp #qbittorrent
-#      - 5055:5055 #jellyseer
-#    cap_add:
-#      - NET_ADMIN
-#    devices:
-#      - /dev/net/tun:/dev/net/tun
-#    environment:
-#      - VPN_SERVICE_PROVIDER=nordvpn
-#      - VPN_TYPE=openvpn # or wireguard
-#      - OPENVPN_USER=<your vpn user>
-#      - OPENVPN_PASSWORD=<your vpn password>
-#      - SERVER_COUNTRIES=South Africa
-      
+############################
+# HOMARR
+############################
+  homarr:
+    container_name: homarr
+    image: ghcr.io/homarr-labs/homarr:latest
+    restart: unless-stopped
+    volumes:
+      - /home/allan/Docker/Homarr/configs:/app/data/configs
+      - /home/allan/Docker/Homarr/icons:/app/public/icons
+      - /home/allan/Docker/Homarr/data:/data
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - TZ=Africa/Johannesburg
+    ports:
+      - 7575:7575
+    networks:
+      arr_net:
+        ipv4_address: 172.28.0.11
+
+############################
+# PROFILARR
+############################
+  profilarr:
+    container_name: profilarr
+    image: santiagosayshey/profilarr:latest
+    restart: unless-stopped
+    environment:
+      - TZ=Africa/Johannesburg
+    volumes:
+      - /home/allan/Docker/Profilarr/config:/config
+    ports:
+      - 6868:6868
+    networks:
+      arr_net:
+        ipv4_address: 172.28.0.12
+
+############################
+# NETWORK DEFINITION
+############################
+networks:
+  arr_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.28.0.0/16
