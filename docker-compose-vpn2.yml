@@ -11,11 +11,11 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=Etc/UTC 
+      - TZ=Africa/Johannesburg 
     volumes:
-      - /share/Docker/Radarr/config:/config
-      - /share/Movies:/movies
-      - /share/Download:/downloads
+      - /home/allan/Docker/Radarr/config:/config
+      - /home/allan/Movies:/movies
+      - /home/allan/Download:/downloads
     networks:
       arr_net:
         ipv4_address: 172.28.0.2
@@ -32,11 +32,11 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=Etc/UTC
+      - TZ=Africa/Johannesburg
     volumes:
-      - /share/Docker/Sonarr/config:/config
-      - /share/Series:/data/series
-      - /share/Download:/downloads
+      - /home/allan/Docker/Sonarr/config:/config
+      - /home/allan/Series:/data/series
+      - /home/allan/Download:/downloads
     networks:
       arr_net:
         ipv4_address: 172.28.0.3
@@ -53,9 +53,9 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=Etc/UTC
+      - TZ=Africa/Johannesburg
     volumes:
-      - /share/Docker/Prowlarr/config:/config
+      - /home/allan/Docker/Prowlarr/config:/config
     networks:
       arr_net:
         ipv4_address: 172.28.0.4
@@ -72,11 +72,11 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=Etc/UTC
+      - TZ=Africa/Johannesburg
     volumes:
-      - /share/Docker/Bazarr/config:/config
-      - /share/Movies:/movies
-      - /share/Series:/data/series
+      - /home/allan/Docker/Bazarr/config:/config
+      - /home/allan/Movies:/movies
+      - /home/allan/Series:/data/series
     networks:
       arr_net:
         ipv4_address: 172.28.0.5
@@ -93,11 +93,11 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=Etc/UTC
+      - TZ=Africa/Johannesburg
     volumes:
-      - /share/Docker/Lidarr/config:/config
-      - /share/Music:/music
-      - /share/Download:/downloads
+      - /home/allan/Docker/Lidarr/config:/config
+      - /home/allan/Music:/music
+      - /home/allan/Download:/downloads
     networks:
       arr_net:
         ipv4_address: 172.28.0.6
@@ -141,11 +141,11 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=Etc/UTC
+      - TZ=Africa/Johannesburg
       - WEBUI_PORT=8080
     volumes:
-      - /share/Docker/Qbittorrent/config:/config
-      - /share/Download:/downloads
+      - /home/allan/Docker/Qbittorrent/config:/config
+      - /home/allan/Download:/downloads
     restart: unless-stopped
     depends_on:
       - gluetun
@@ -159,12 +159,12 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=Etc/UTC
+      - TZ=Africa/Johannesburg
       - NZBGET_USER=nzbget
       - NZBGET_PASS=tegbzn6789
     volumes:
-      - /share/Docker/nzbget/config:/config
-      - /share/Download:/downloads
+      - /home/allan/Docker/nzbget/config:/config
+      - /home/allan/Download:/downloads
     ports:
       - 6789:6789
     networks:
@@ -181,12 +181,12 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=Etc/UTC
+      - TZ=Africa/Johannesburg
     volumes:
-      - /share/Docker/Jellyfin/config:/config
-      - /share/Series:/data/series
-      - /share/Movies:/data/movies
-      - /share/Music:/data/music
+      - /home/allan/Docker/Jellyfin/config:/config
+      - /home/allan/Series:/data/series
+      - /home/allan/Movies:/data/movies
+      - /home/allan/Music:/data/music
     ports:
       - 8096:8096
       - 8920:8920
@@ -198,17 +198,20 @@ services:
     restart: unless-stopped
 
 ############################
-# JELLYSEER (Direct Network)
+# SEERR (Formerly Jellyseerr)
 ############################
-  jellyseerr:
-    image: fallenbagel/jellyseerr:latest
-    container_name: Jellyseerr
+  seerr:
+    image: ghcr.io/seerr-team/seerr:latest
+    container_name: seerr
+    # Seerr requires init: true in Docker Compose
+    init: true
     ports:
       - 5055:5055
     environment:
-      - TZ=Africa/Johannesburg          
+      - TZ=Africa/Johannesburg
+      - LOG_LEVEL=info
     volumes:
-      - /share/Docker/Jellyseer/config:/app/config
+      - /home/allan/Docker/Seerr/config:/app/config
     networks:
       arr_net:
         ipv4_address: 172.28.0.10
@@ -222,9 +225,9 @@ services:
     image: ghcr.io/homarr-labs/homarr:latest
     restart: unless-stopped
     volumes:
-      - /share/Docker/Homarr/configs:/app/data/configs
-      - /share/Docker/Homarr/icons:/app/public/icons
-      - /share/Docker/Homarr/data:/data
+      - /home/allan/Docker/Homarr/configs:/app/data/configs
+      - /home/allan/Docker/Homarr/icons:/app/public/icons
+      - /home/allan/Docker/Homarr/data:/data
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
       - TZ=Africa/Johannesburg
@@ -244,7 +247,7 @@ services:
     environment:
       - TZ=Africa/Johannesburg
     volumes:
-      - /share/Docker/Profilarr/config:/config
+      - /home/allan/Docker/Profilarr/config:/config
     ports:
       - 6868:6868
     networks:
