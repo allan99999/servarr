@@ -37,7 +37,7 @@ services:
     volumes:
       - /home/allan/Docker/Sonarr/config:/config
       # NFS MOUNTS
-      - nas_series:/data/series
+      - nas_series:/series
       - nas_downloads:/downloads
     networks:
       arr_net:
@@ -79,7 +79,7 @@ services:
       - /home/allan/Docker/Bazarr/config:/config
       # NFS MOUNTS
       - nas_movies:/movies
-      - nas_series:/data/series
+      - nas_series:/series
     networks:
       arr_net:
         ipv4_address: 172.28.0.5
@@ -168,11 +168,11 @@ services:
     volumes:
       - /home/allan/Docker/Jellyfin/config:/config
       # NFS MOUNTS
-      - nas_series:/data/series
-      - nas_movies:/data/movies
-      - nas_music:/data/music
-      - nas_books:/data/books
-      - nas_pictures:/data/pictures
+      - nas_series:/series
+      - nas_movies:/movies
+      - nas_music:/music
+      - nas_books:/books
+      - nas_pictures:/pictures
     ports:
       - 8096:8096
       - 8920:8920
